@@ -43,7 +43,33 @@ class ListaDoble:
 			nuevo.siguiente=self.primero
 			self.primero=nuevo
 			return "insertado en posicion" + str(self.indice)
-		
+
+	def editar_ultimo(self,datox,datoy):
+		self.ultimo.x=datox
+		self.ultimo.y=datoy
+
+	def cambiar_posicion(self)
+		aux=self.primero
+		while(aux.siguiente!=None) :
+			aux.x=aux.siguiente.x
+			aux.y=aux.siguiente.y
+			pass
+
+	def obtener_pos(self,index,dato):
+		if (index<0 or index>self.indice):
+			return "No se econtro la posicion"
+		else:
+			aux=self.primero
+			contar=0
+			while(contar<index):
+				aux=aux.siguiente
+				contar+=1
+				pass
+			pass
+		if(dato==1):
+			return int(aux.x)
+		elif(dato==2):
+			return int(aux.y)
 
 	def eliminar(self,index):
 		if (index<0 or index>self.indice):
@@ -92,3 +118,10 @@ class ListaDoble:
 		os.system("timeout 5")
 		self.nograficos+=1
 		pass
+
+	def mostrar(self):
+		aux=self.primero
+		while aux!=None:
+			print(str(aux.x)+"-"+str(aux.y))
+			aux=aux.siguiente
+			pass	
