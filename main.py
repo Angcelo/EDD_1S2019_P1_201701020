@@ -21,17 +21,18 @@ snake.insertar_inicio(1,1)
 key=KEY_RIGHT
 pos_x=snake.obtener_pos(2,1)
 pos_y=snake.obtener_pos(2,1)
-window.addch(snake.obtener_pos(0,2),snake.obtener_pos(0,1),'*')
-window.addch(snake.obtener_pos(1,2),snake.obtener_pos(1,1),'*')
-window.addch(snake.obtener_pos(2,2),snake.obtener_pos(2,1),'*')
-window.timeout(10000)
+for x in range(0,snake.get_indice()+1):
+	window.addch(snake.obtener_pos(x,2),snake.obtener_pos(x,1),'*')
+	pass
 while key!=27:
 	window.timeout(100)
 	keystroke=window.getch()
 	if keystroke is not -1:
 		key=keystroke
 		pass
-	window.addch(pos_y,pos_x,' ')
+	for x in range(0,snake.get_indice()+1):
+		window.addch(snake.obtener_pos(x,2),snake.obtener_pos(x,1),' ')
+		pass
 	if key==KEY_RIGHT:
 		pos_x=pos_x+1
 	elif key==KEY_LEFT:
@@ -41,8 +42,14 @@ while key!=27:
 	elif key==KEY_DOWN:
 		pos_y=pos_y+1
 		pass
-	snake.editar_ultimo(pos_x,pos_y)
 	snake.cambiar_posicion()
-	window.addch(pos_y,pos_x,'*')
+	snake.editar_ultimo(pos_x,pos_y)
+	try:
+		for x in range(0,snake.get_indice()+1):
+			window.addch(snake.obtener_pos(x,2),snake.obtener_pos(x,1),'*')
+			pass
+	except Exception as e:
+		window=curses.endwin()
+		pass
 	pass
 window=curses.endwin()

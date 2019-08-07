@@ -15,6 +15,9 @@ class ListaDoble:
 		self.indice=-1
 		self.nograficos=0;
 
+	def get_indice(self):
+		return self.indice
+
 	def estaVacia(self):
 		return self.primero==None
 
@@ -48,11 +51,12 @@ class ListaDoble:
 		self.ultimo.x=datox
 		self.ultimo.y=datoy
 
-	def cambiar_posicion(self)
+	def cambiar_posicion(self):
 		aux=self.primero
 		while(aux.siguiente!=None) :
 			aux.x=aux.siguiente.x
 			aux.y=aux.siguiente.y
+			aux=aux.siguiente
 			pass
 
 	def obtener_pos(self,index,dato):
