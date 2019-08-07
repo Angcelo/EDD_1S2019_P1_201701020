@@ -6,25 +6,6 @@ import Usuarios
 Nombre=""
 User=Usuarios.usuarios()	
 
-
-class Principal()
-	screen = curses.initscr()
-	height = 10
-	width=60
-	pos_y=0
-	pos_x=0
-	window = curses.newwin(height,width,pos_y,pos_x)
-	window.keypad(True)
-	curses.curs_set(0)
-	curses.noecho()
-	window.border(0)
-	window.nodelay(True)
-	window.addstr(3,5,"1) Play")
-	window.addstr(3,5,"2) Scoreboard")
-	window.addstr(3,5,"3) User selection")
-	window.addstr(3,5,"4) Reports")
-	window.addstr(3,5,"5) Bulk Loarding")
-
 class Jugar():
 	def __init__(self):
 		global Nombre
@@ -38,20 +19,22 @@ class Jugar():
 			window = curses.newwin(height,width,pos_y,pos_x)
 			window.keypad(True)
 			curses.curs_set(0)
+			curses.echo()
 			window.border(0)
 			window.addstr(3,5,"Introduzca un nombre presione enter para continuar")
 			window.addstr(4,5," ")
 			key=window.getkey()
+			Nombre=Nombre+str(key)
 			while key!="\n":
 				key=window.getkey()
 				Nombre=Nombre+str(key)
 				pass
-			User.insertar_inicio(Nombre)
+			User.insertar(Nombre)
 			window=curses.endwin()
 			pass
-		screen = curses.initscr()
-		height = 50
-		width=50
+		screen2 = curses.initscr()
+		height = 20
+		width=60
 		pos_y=0
 		pos_x=0
 		window = curses.newwin(height,width,pos_y,pos_x)
@@ -64,6 +47,7 @@ class Jugar():
 		snake.insertar_inicio(3,1)
 		snake.insertar_inicio(2,1)
 		snake.insertar_inicio(1,1)
+		window.addstr(0,20,"Nombre:"+Nombre)
 		key=KEY_RIGHT
 		pos_x=snake.obtener_pos(2,1)
 		pos_y=snake.obtener_pos(2,1)
@@ -103,7 +87,7 @@ class Jugar():
 					window.addch(snake.obtener_pos(x,2),snake.obtener_pos(x,1),'#')
 					pass
 			except Exception as e:
-				window=curses.endwin()
+				key=27
 				pass
 			pass
 		window=curses.endwin()
@@ -112,8 +96,8 @@ class Usuarios():
 	"""docstring for Usuari"""
 	def __init__(self):
 		screen = curses.initscr()
-		height = 40
-		width=40
+		height = 10
+		width=60
 		pos_y=0
 		pos_x=0
 		window = curses.newwin(height,width,pos_y,pos_x)
@@ -122,6 +106,49 @@ class Usuarios():
 		curses.curs_set(0)
 		window.border(0)
 		window.nodelay(True)
-		user=Usuarios.usuarios()
+		window.addstr(0,25,"Select User")
+		window.addstr(1,21,"Press ESC to select")
+		global User
+		global Nombre
+		User.insertar("Angel")
+		User.insertar("David")
+		iteracion=0
+		key=-1
+		while key!=27:
+			window.addstr(3,25,"<--"+User.obtener_iteracion(iteracion)+"-->")
+			Nombre=User.obtener_iteracion(iteracion)
+			key=window.getch()
+			if key==KEY_RIGHT:
+				iteracion=iteracion+1
+			elif key==KEY_LEFT:
+				iteracion=iteracion-1
+				pass
+			pass
 
-Jugar()
+class Principal():
+	while True:
+		screen = curses.initscr()
+		height = 10
+		width=60
+		pos_y=0
+		pos_x=0
+		window = curses.newwin(height,width,pos_y,pos_x)
+		window.keypad(True)
+		curses.curs_set(0)
+		curses.noecho()
+		window.border(0)
+		window.addstr(0,26,"Main Menu")
+		window.addstr(3,10,"1) Play")
+		window.addstr(4,10,"2) Scoreboard")
+		window.addstr(5,10,"3) User selection")
+		window.addstr(6,10,"4) Reports")
+		window.addstr(7,10,"5) Bulk Loarding")
+		key=window.getkey()
+		if key=="1":
+			juego=Jugar()
+		elif key=="3":
+			seleccion=Usuarios()
+			pass
+		pass
+
+Principal()

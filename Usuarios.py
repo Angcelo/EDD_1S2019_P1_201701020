@@ -8,34 +8,49 @@ class usuarios:
 
 	def __init__(self):
 		self.primero=None
-		self.ultimo=None
 		self.tamaño=-1
 
 	def estaVacia(self):
 		return self.primero==None
 
-	def insertar_inicio(self,nombre):
+	def get_tam(self):
+		return self.tamaño
+
+	def insertar(self,nombre):
 		nuevo=NodoDoble(nombre)
 		self.tamaño = self.tamaño+1
 		if (self.estaVacia()):
 			self.primero=nuevo
-			self.ultimo=nuevo
-			return "insertado al inicio"
+			self.primero.siguiente=self.primero
+			self.primero.anterior=self.primero
 		else:
-			self.primero.anterior=nuevo
 			nuevo.siguiente=self.primero
+			nuevo.anterior=self.primero.anterior
+			self.primero.anterior.siguiente=nuevo
+			self.primero.anterior=nuevo
 			self.primero=nuevo
-			return "insertado en posicion" + str(self.tamaño)
 
 	def obtener_pos(self,nombre):
-		if (index<0 or index>self.indice):
-			return "No se econtro la posicion"
-		else:
-			aux=self.primero
-			contar=0
-			while(uax.nombre!=nombre):
+		aux=self.primero
+		if self.estaVacia()==False:
+			while(aux.nombre!=nombre):
 				aux=aux.siguiente
 				contar+=1
 				pass
+			return aux.nombre
 			pass
-		return aux.nombre
+		return ""
+
+	def obtener_iteracion(self,iteracion):
+		contar=0
+		if self.estaVacia()==False:
+			aux=self.primero	
+			while(contar<=iteracion):
+				aux=aux.siguiente
+				contar+=1
+				pass
+			return aux.nombre
+			pass
+		return ""
+		
+		
