@@ -62,6 +62,7 @@ class Jugar():
 			window.addch(snake.obtener_pos(x,2),snake.obtener_pos(x,1),'#')
 			pass
 		while key!=27:
+			window.addstr(0,1,"Puntaje:"+str(comida.get_puntaje()))
 			if activado==False:
 				espx=randint(2,48)
 				espy=randint(2,23)
