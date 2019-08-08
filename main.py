@@ -2,6 +2,8 @@ import curses
 from curses import KEY_RIGHT, KEY_LEFT, KEY_UP, KEY_DOWN, KEY_ENTER
 import serpiente
 import Usuarios
+import pilaboca
+from random import randint, uniform,random
 
 Nombre=""
 User=Usuarios.usuarios()	
@@ -10,10 +12,12 @@ class Jugar():
 	def __init__(self):
 		global Nombre
 		global User
+		activado=False
+		tipo=0
 		if  Nombre=="":
 			screen = curses.initscr()
 			height = 10
-			width=60
+			width=50
 			pos_y=0
 			pos_x=0
 			window = curses.newwin(height,width,pos_y,pos_x)
@@ -21,7 +25,7 @@ class Jugar():
 			curses.curs_set(0)
 			curses.echo()
 			window.border(0)
-			window.addstr(3,5,"Introduzca un nombre presione enter para continuar")
+			window.addstr(3,5,"Introduzca un nombre, enter para continuar")
 			window.addstr(4,5," ")
 			key=window.getkey()
 			Nombre=Nombre+str(key)
@@ -33,10 +37,12 @@ class Jugar():
 			window=curses.endwin()
 			pass
 		screen2 = curses.initscr()
-		height = 20
-		width=60
+		height = 25
+		width=50
 		pos_y=0
 		pos_x=0
+		espx=0
+		espy=0
 		window = curses.newwin(height,width,pos_y,pos_x)
 		window.keypad(True)
 		curses.curs_set(0)
@@ -44,17 +50,32 @@ class Jugar():
 		window.border(0)
 		window.nodelay(True)
 		snake=serpiente.ListaDoble()
+		comida=pilaboca.Pila()
 		snake.insertar_inicio(3,1)
 		snake.insertar_inicio(2,1)
 		snake.insertar_inicio(1,1)
-		window.addstr(0,20,"Nombre:"+Nombre)
+		window.addstr(0,18,"Nombre:"+Nombre)
 		key=KEY_RIGHT
 		pos_x=snake.obtener_pos(2,1)
-		pos_y=snake.obtener_pos(2,1)
+		pos_y=snake.obtener_pos(2,2)
 		for x in range(0,snake.get_indice()+1):
 			window.addch(snake.obtener_pos(x,2),snake.obtener_pos(x,1),'#')
 			pass
 		while key!=27:
+			if activado==False:
+				espx=randint(2,48)
+				espy=randint(2,23)
+				espcual=randint(0,9)
+				if espcual>=8:
+					window.addch(espy,espx,'*')
+					activado=True
+					tipo=2
+				else:
+					window.addch(espy,espx,'+')
+					activado=True
+					tipo=1
+					pass
+				pass
 			window.timeout(100)
 			keystroke=window.getch()
 			if keystroke==KEY_RIGHT and key==KEY_LEFT:
@@ -82,6 +103,16 @@ class Jugar():
 				pass
 			snake.cambiar_posicion()
 			snake.editar_ultimo(pos_x,pos_y)
+			if pos_x==espx and pos_y==espy:
+				if tipo==1:
+					snake.insertar_inicio(1,1)
+					comida.push(str(espx)+","+str(espy))
+				else:
+					snake.eliminar(0)
+					comida.pop()
+					pass
+				activado=False
+				pass
 			try:
 				for x in range(0,snake.get_indice()+1):
 					window.addch(snake.obtener_pos(x,2),snake.obtener_pos(x,1),'#')
@@ -97,7 +128,7 @@ class Usuarios():
 	def __init__(self):
 		screen = curses.initscr()
 		height = 10
-		width=60
+		width=50
 		pos_y=0
 		pos_x=0
 		window = curses.newwin(height,width,pos_y,pos_x)
@@ -106,8 +137,8 @@ class Usuarios():
 		curses.curs_set(0)
 		window.border(0)
 		window.nodelay(True)
-		window.addstr(0,25,"Select User")
-		window.addstr(1,21,"Press ESC to select")
+		window.addstr(0,20,"Select User")
+		window.addstr(1,16,"Press ESC to select")
 		global User
 		global Nombre
 		User.insertar("Angel")
@@ -129,7 +160,7 @@ class Principal():
 	while True:
 		screen = curses.initscr()
 		height = 10
-		width=60
+		width=50
 		pos_y=0
 		pos_x=0
 		window = curses.newwin(height,width,pos_y,pos_x)
@@ -137,7 +168,7 @@ class Principal():
 		curses.curs_set(0)
 		curses.noecho()
 		window.border(0)
-		window.addstr(0,26,"Main Menu")
+		window.addstr(0,21,"Main Menu")
 		window.addstr(3,10,"1) Play")
 		window.addstr(4,10,"2) Scoreboard")
 		window.addstr(5,10,"3) User selection")

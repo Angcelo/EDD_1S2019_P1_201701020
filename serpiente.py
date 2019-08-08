@@ -76,8 +76,8 @@ class ListaDoble:
 			return int(aux.y)
 
 	def eliminar(self,index):
-		if (index<0 or index>self.indice):
-			return "No se econtro la posicion"
+		if (index<0 or index>self.indice or self.indice<=3):
+			return 
 		else:
 			aux=self.primero
 			contar=0
