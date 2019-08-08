@@ -8,24 +8,32 @@ class lista:
 		self.tamaño=0
 		self.primero=None
 
-	def esVacia():
+	def esVacia(self):
 		return  self.primero==None
 
-	def encolar(valor):
+	def encolar(self,valor):
 		nuevo=Nodo(valor)
-		if esVacia():
+		if self.esVacia():
 			self.primero=nuevo
 		else:
 			nuevo.siguiente=self.primero
 			self.primero=nuevo
 			pass
+		self.tamaño += 1
 		pass
 
-	def desencolar():
+	def desencolar(self):
 		aux=self.primero
-		while aux.siguiente.siguiente==None:
+		if self.esVacia()==False:
+			temp=self.primero.valor
+			self.primero=self.primero.siguiente
+			return temp
+			pass
+		
+
+	def mostrar(self):
+		aux=self.primero
+		while aux!=None:
+			print(aux.valor)
 			aux=aux.siguiente
 			pass
-		temp=aux.siguiente.valor
-		aux.siguiente=None
-		return valor
