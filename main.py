@@ -4,6 +4,7 @@ import serpiente
 import Usuarios
 import pilaboca
 import Puntaje
+import os
 from random import randint, uniform,random
 
 Nombre=""
@@ -31,10 +32,10 @@ class Jugar():
 			window.addstr(3,5,"Introduzca un nombre, enter para continuar")
 			window.addstr(4,5," ")
 			key=window.getkey()
-			Nombre=Nombre+str(key)
+			Nombre=""
 			while key!="\n":
-				key=window.getkey()
 				Nombre=Nombre+str(key)
+				key=window.getkey()
 				pass
 			User.insertar(Nombre)
 			window=curses.endwin()
@@ -145,11 +146,10 @@ class Usuarios():
 		window.addstr(1,16,"Press ESC to select")
 		global User
 		global Nombre
-		User.insertar("Angel")
-		User.insertar("David")
 		iteracion=0
 		key=-1
 		while key!=27:
+			window.addstr(3,2,"                                              ")
 			window.addstr(3,20,"<--"+User.obtener_iteracion(iteracion)+"-->")
 			Nombre=User.obtener_iteracion(iteracion)
 			key=window.getch()
@@ -181,6 +181,46 @@ class Score():
 			pass
 		window.getch()
 
+class Bulk():
+	"""docstring for Bulk"""
+	def __init__(self):
+		screen = curses.initscr()
+		height = 10
+		width=50
+		pos_y=0
+		pos_x=0
+		window = curses.newwin(height,width,pos_y,pos_x)
+		window.keypad(True)
+		curses.curs_set(0)
+		curses.echo()
+		window.border(0)
+		window.nodelay(False)
+		window.addstr(2,13,"Ingrese nombre de archivo")
+		window.addstr(4,13,"")
+		key=window.getkey()
+		archivo=""
+		while key!="\n":
+			archivo=archivo+str(key)	
+			key=window.getkey()
+			pass
+		try:
+			f=open(archivo)
+			valor=f.read()
+			valores=valor.split("\n")
+			primero=False
+			for x in valores:
+				if primero==False or x=="":
+					primero=True
+				else:
+					User.insertar(x)
+					pass
+				pass	
+			window.addstr(6,13,"Usuarios ingresados")
+		except Exception as e:
+			window.addstr(6,13,"error"+str(e))
+		window.getch()
+
+
 class Principal():
 	while True:
 		screen = curses.initscr()
@@ -207,6 +247,8 @@ class Principal():
 			socore=Score()
 		elif key=="3":
 			seleccion=Usuarios()
+		elif key=="4":
+			carga=Bulk()
 			pass
 		pass
 

@@ -49,6 +49,10 @@ class usuarios:
 				aux=aux.siguiente
 				contar+=1
 				pass
+			while (contar>=iteracion):
+				aux=aux.anterior
+				contar-=1
+				pass
 			return aux.nombre
 			pass
 		return ""
