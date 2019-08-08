@@ -1,6 +1,7 @@
 class Nodo:
-	def __init__(self, valor):
+	def __init__(self, valor, user):
 		self.valor=valor
+		self.user=user
 		self.siguiente=None
 
 class lista:
@@ -14,17 +15,6 @@ class lista:
 	def get_tam(self):
 		return self.tamaño
 
-	def encolar(self,valor):
-		nuevo=Nodo(valor)
-		if self.esVacia():
-			self.primero=nuevo
-		else:
-			nuevo.siguiente=self.primero
-			self.primero=nuevo
-			pass
-		self.tamaño += 1
-		pass
-
 	def desencolar(self):
 		aux=self.primero
 		if self.esVacia()==False:
@@ -32,8 +22,25 @@ class lista:
 			self.primero=self.primero.siguiente
 			return temp
 			pass
+
+	def encolar(self,valor,user):
+		nuevo=Nodo(valor,user)
+		if self.esVacia():
+			self.primero=nuevo
+		else:
+			aux=self.primero
+			while aux.siguiente!=None:
+				aux=aux.siguiente
+				pass
+			aux.siguiente=nuevo
+			pass
+		self.tamaño += 1
+		if self.tamaño>10:
+			self.desencolar()
+			pass
+		pass
 		
-	def mostrar_pos(self,index):
+	def mostrar_pos(self,index,tipo):
 		aux=self.primero
 		if self.esVacia()==False:
 			contar=0
@@ -41,7 +48,10 @@ class lista:
 				aux=aux.siguiente
 				contar+=1
 				pass
-			return (aux.valor)
+			if tipo==1:	
+				return str(aux.valor)
+			else:
+				return (aux.user)
 			pass
 		return " "
 

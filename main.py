@@ -123,6 +123,8 @@ class Jugar():
 					window.addch(snake.obtener_pos(x,2),snake.obtener_pos(x,1),'#')
 					pass
 			except Exception as e:
+				Records.encolar(Nombre,comida.get_puntaje())
+				snake.graficar()
 				key=27
 				pass
 			pass
@@ -177,7 +179,7 @@ class Score():
 		window.nodelay(False)
 		window.addstr(0,22,"Records")
 		for x in range(0,Records.get_tam()+1):
-			window.addch(x+3,20,Records.mostrar_pos(x))
+			window.addch(x+3,20,Records.mostrar_pos(x,1)+": "+Records.mostrar_pos(x,2))
 			pass
 		window.getch()
 
@@ -248,6 +250,8 @@ class Principal():
 		elif key=="3":
 			seleccion=Usuarios()
 		elif key=="4":
+			seleccion=Usuarios()
+		elif key=="5":
 			carga=Bulk()
 			pass
 		pass

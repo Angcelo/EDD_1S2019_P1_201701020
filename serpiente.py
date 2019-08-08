@@ -108,10 +108,10 @@ class ListaDoble:
 		aux=self.primero
 		while aux!=None:
 			if(aux.anterior is not None):
-				f.write("\""+str(aux.item)+"\"  -> \""+str(aux.anterior.item)+"\";\n")
+				f.write("\"("+str(aux.x)+","+str(aux.y))+")\"  -> \"("+str(aux.anterior.x)+","+str(aux.anterior.y))+")\";\n")
 				pass
 			if(aux.siguiente is not None):
-				f.write("\""+str(aux.item)+"\"  -> \""+str(aux.siguiente.item)+"\";\n")
+				f.write("\"("+str(aux.x)+","+str(aux.y))+")\"  -> \"("+str(aux.siguiente.x)+","+str(aux.siguiente.y))+")\";\n")
 				pass
 			aux=aux.siguiente	
 			pass
