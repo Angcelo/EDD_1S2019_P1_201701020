@@ -11,6 +11,9 @@ class lista:
 	def esVacia(self):
 		return  self.primero==None
 
+	def get_tam(self):
+		return self.tamaño
+
 	def encolar(self,valor):
 		nuevo=Nodo(valor)
 		if self.esVacia():
@@ -30,6 +33,17 @@ class lista:
 			return temp
 			pass
 		
+	def mostrar_pos(self,index):
+		aux=self.primero
+		if self.esVacia()==False:
+			contar=0
+			while(contar<=index):
+				aux=aux.siguiente
+				contar+=1
+				pass
+			return (aux.valor)
+			pass
+		return " "
 
 	def mostrar(self):
 		aux=self.primero

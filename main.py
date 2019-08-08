@@ -3,10 +3,12 @@ from curses import KEY_RIGHT, KEY_LEFT, KEY_UP, KEY_DOWN, KEY_ENTER
 import serpiente
 import Usuarios
 import pilaboca
+import Puntaje
 from random import randint, uniform,random
 
 Nombre=""
 User=Usuarios.usuarios()	
+Records=Puntaje.lista()
 
 class Jugar():
 	def __init__(self):
@@ -25,6 +27,7 @@ class Jugar():
 			curses.curs_set(0)
 			curses.echo()
 			window.border(0)
+			window.nodelay(False)
 			window.addstr(3,5,"Introduzca un nombre, enter para continuar")
 			window.addstr(4,5," ")
 			key=window.getkey()
@@ -147,7 +150,7 @@ class Usuarios():
 		iteracion=0
 		key=-1
 		while key!=27:
-			window.addstr(3,25,"<--"+User.obtener_iteracion(iteracion)+"-->")
+			window.addstr(3,20,"<--"+User.obtener_iteracion(iteracion)+"-->")
 			Nombre=User.obtener_iteracion(iteracion)
 			key=window.getch()
 			if key==KEY_RIGHT:
@@ -156,6 +159,27 @@ class Usuarios():
 				iteracion=iteracion-1
 				pass
 			pass
+
+class Score():
+	"""docstring for Score"""
+	def __init__(self):
+		global Records
+		screen = curses.initscr()
+		height = 15
+		width=50
+		pos_y=0
+		pos_x=0
+		window = curses.newwin(height,width,pos_y,pos_x)
+		window.keypad(True)
+		curses.curs_set(0)
+		curses.noecho()
+		window.border(0)
+		window.nodelay(False)
+		window.addstr(0,22,"Records")
+		for x in range(0,Records.get_tam()+1):
+			window.addch(x+3,20,Records.mostrar_pos(x))
+			pass
+		window.getch()
 
 class Principal():
 	while True:
@@ -169,6 +193,7 @@ class Principal():
 		curses.curs_set(0)
 		curses.noecho()
 		window.border(0)
+		window.nodelay(False)
 		window.addstr(0,21,"Main Menu")
 		window.addstr(3,10,"1) Play")
 		window.addstr(4,10,"2) Scoreboard")
@@ -178,6 +203,8 @@ class Principal():
 		key=window.getkey()
 		if key=="1":
 			juego=Jugar()
+		elif key=="2":
+			socore=Score()
 		elif key=="3":
 			seleccion=Usuarios()
 			pass
