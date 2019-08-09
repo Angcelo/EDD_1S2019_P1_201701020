@@ -1,3 +1,5 @@
+import os
+
 class NodoDoble:  
     def __init__(self, nombre):
         self.nombre=nombre
@@ -30,17 +32,6 @@ class usuarios:
 			self.primero.anterior=nuevo
 			self.primero=nuevo
 
-	def obtener_pos(self,nombre):
-		aux=self.primero
-		if self.estaVacia()==False:
-			while(aux.nombre!=nombre):
-				aux=aux.siguiente
-				contar+=1
-				pass
-			return aux.nombre
-			pass
-		return ""
-
 	def obtener_iteracion(self,iteracion):
 		contar=0
 		if self.estaVacia()==False:
@@ -56,5 +47,43 @@ class usuarios:
 			return aux.nombre
 			pass
 		return ""
+
+	def mostrar(self):
+		contar=0
+		if self.estaVacia()==False:
+			aux=self.primero
+			while(contar<=self.tamaño):
+				print(aux.nombre)
+				aux=aux.siguiente
+				contar+=1
+			pass
+		return ""
+
+	def graficar(self):
+		f=open("usuarios.dot","w")
+		f.write("digraph listacirulardoble{\n")
+		f.write("rankdir=\"LR\";\n")
+		f.write("ratio=0.3")
+		f.write("node [shape=\"record\"];\n")
+		aux=self.primero
+		contar=0
+		while contar<=self.tamaño:
+			f.write(aux.nombre+" [ label = \"{|("+aux.nombre+")|\\l}\"];\n")
+			aux=aux.siguiente
+			contar+=1
+			pass
+		aux=self.primero
+		contar=0
+		while(contar<=self.tamaño):
+			f.write(aux.nombre +"->"+ aux.anterior.nombre+"\n")
+			print("iteracion :"+str(contar))
+			f.write(aux.nombre + "->" +aux.siguiente.nombre+"\n")
+			aux=aux.siguiente	
+			contar+=1
+			pass
+		f.write("}")
+		f.close()
+		os.system("dot -Tjpg usuarios.dot -o imagenusuarios.jpg")
+		pass
 		
 		

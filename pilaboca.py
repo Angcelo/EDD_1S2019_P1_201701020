@@ -1,3 +1,5 @@
+import os
+
 class Nodo:
 	def __init__(self, valor):
 		self.valor=valor
@@ -34,3 +36,18 @@ class Pila():
 			return temp
 		else:
 			return 0
+
+	def graficar(self):
+		f=open("Pila.dot","w")
+		f.write("digraph pila{\n")
+		f.write("rankdir=\"LR\";\n")
+		f.write("node [shape=\"record\"];\n")
+		f.write("node0 [label=\"")
+		aux=self.cima
+		while aux!=None:
+			f.write("|("+aux.valor+")")
+			aux=aux.siguiente
+			pass
+		f.write("\",height=2.5];}")
+		f.close()
+		os.system("dot -Tjpg Pila.dot -o imagenPila.jpg")

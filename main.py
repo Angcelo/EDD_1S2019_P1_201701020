@@ -8,6 +8,7 @@ import os
 from random import randint, uniform,random
 
 Nombre=""
+dificultad=0
 User=Usuarios.usuarios()	
 Records=Puntaje.lista()
 
@@ -15,6 +16,7 @@ class Jugar():
 	def __init__(self):
 		global Nombre
 		global User
+		global dificultad
 		activado=False
 		tipo=0
 		if  Nombre=="":
@@ -55,9 +57,9 @@ class Jugar():
 		window.nodelay(True)
 		snake=serpiente.ListaDoble()
 		comida=pilaboca.Pila()
-		snake.insertar_inicio(3,1)
-		snake.insertar_inicio(2,1)
-		snake.insertar_inicio(1,1)
+		snake.insertar_inicio(3,2)
+		snake.insertar_inicio(2,2)
+		snake.insertar_inicio(1,2)
 		window.addstr(0,18,"Nombre:"+Nombre)
 		key=KEY_RIGHT
 		pos_x=snake.obtener_pos(2,1)
@@ -66,10 +68,23 @@ class Jugar():
 			window.addch(snake.obtener_pos(x,2),snake.obtener_pos(x,1),'#')
 			pass
 		while key!=27:
-			window.addstr(0,1,"Puntaje:"+str(comida.get_puntaje()))
+			window.addstr(0,1,"Puntaje:"+str(comida.get_puntaje())+"-")
+			if(dificultad==1):
+				for x in range(0,6):
+					window.addstr(5+x,15,"|")
+					window.addstr(5+x,35,"|")
+					window.addstr(15+x,15,"|")
+					window.addstr(15+x,35,"|")
+					pass
 			if activado==False:
 				espx=randint(2,48)
 				espy=randint(2,23)
+				if dificultad==1:
+					while (espx==15 or espx==35) and (espy==5 or espy==6 or espy==7 or espy==8 or espy==9 or espy==10 or espy==15 or espy==16 or espy==17 or espy==18 or espy==19 or espy==20):
+						espx=randint(2,48)
+						espy=randint(2,23)
+						pass
+					pass
 				espcual=randint(0,9)
 				if espcual>=8:
 					window.addch(espy,espx,'*')
@@ -92,7 +107,9 @@ class Jugar():
 			elif keystroke==KEY_DOWN and key==KEY_UP:
 				key=KEY_UP
 			elif keystroke is not -1:
-				key=keystroke
+				if keystroke==KEY_RIGHT or keystroke==KEY_LEFT or  keystroke==KEY_UP or keystroke==KEY_DOWN or keystroke==27:
+					key=keystroke
+					pass
 				pass
 			for x in range(0,snake.get_indice()+1):
 				window.addch(snake.obtener_pos(x,2),snake.obtener_pos(x,1),' ')
@@ -106,6 +123,16 @@ class Jugar():
 			elif key==KEY_DOWN:
 				pos_y=pos_y+1
 				pass
+			if(comida.get_puntaje()==15 and dificultad==0):
+				dificultad=1
+				window=curses.endwin()
+				Jugar()
+				pass
+			elif(comida.get_puntaje()==15 and dificultad==1):
+				Records.encolar(15+comida.get_puntaje(),Nombre)
+				snake.graficar()
+				comida.graficar()
+				key=27
 			snake.cambiar_posicion()
 			snake.editar_ultimo(pos_x,pos_y)
 			if pos_x==espx and pos_y==espy:
@@ -118,13 +145,32 @@ class Jugar():
 					pass
 				activado=False
 				pass
+			if pos_x==0 or pos_y==0 or pos_x==49 or pos_y==24:
+				Records.encolar(comida.get_puntaje()*(1-dificultad)+(15+comida.get_puntaje())*dificultad,Nombre)
+				snake.graficar()
+				comida.graficar()
+				key=27
+				pass
+			if dificultad==1:
+				if (pos_x==15 or pos_x==35) and (pos_y==5 or pos_y==6 or pos_y==7 or pos_y==8 or pos_y==9 or pos_y==10 or pos_y==15 or pos_y==16 or pos_y==17 or pos_y==18 or pos_y==19 or pos_y==20):
+					Records.encolar(15+comida.get_puntaje(),Nombre)
+					snake.graficar()
+					comida.graficar()
+					key=27
+				pass
+			for x in range(0,snake.get_indice()):
+				if pos_y==snake.obtener_pos(x,2) and pos_x==snake.obtener_pos(x,1):
+					Records.encolar(comida.get_puntaje()*(1-dificultad)+(15+comida.get_puntaje())*dificultad,Nombre)
+					snake.graficar()
+					comida.graficar()
+					key=27
+					pass
+				pass
 			try:
 				for x in range(0,snake.get_indice()+1):
 					window.addch(snake.obtener_pos(x,2),snake.obtener_pos(x,1),'#')
 					pass
 			except Exception as e:
-				Records.encolar(Nombre,comida.get_puntaje())
-				snake.graficar()
 				key=27
 				pass
 			pass
@@ -178,8 +224,10 @@ class Score():
 		window.border(0)
 		window.nodelay(False)
 		window.addstr(0,22,"Records")
-		for x in range(0,Records.get_tam()+1):
-			window.addch(x+3,20,Records.mostrar_pos(x,1)+": "+Records.mostrar_pos(x,2))
+		for x in range(0,Records.get_tam()):
+			nombreusuario=Records.get_user(x)
+			record=str(Records.get_score(x))
+			window.addstr(x+3,20,nombreusuario+": "+record)
 			pass
 		window.getch()
 
@@ -218,12 +266,15 @@ class Bulk():
 					pass
 				pass	
 			window.addstr(6,13,"Usuarios ingresados")
+			f.close()
 		except Exception as e:
 			window.addstr(6,13,"error"+str(e))
 		window.getch()
 
 
 class Principal():
+	global Records
+	global dificultad
 	while True:
 		screen = curses.initscr()
 		height = 10
@@ -244,13 +295,22 @@ class Principal():
 		window.addstr(7,10,"5) Bulk Loarding")
 		key=window.getkey()
 		if key=="1":
+			dificultad=0
 			juego=Jugar()
 		elif key=="2":
 			socore=Score()
 		elif key=="3":
 			seleccion=Usuarios()
 		elif key=="4":
-			seleccion=Usuarios()
+			Records.graficar()
+			User.graficar()
+			try:		
+				os.system('imagenserpiente.jpg')
+				os.system('imagenscore.jpg')
+				os.system('imagenPila.jpg')
+				os.system('imagenusuarios.jpg')
+			except Exception as e:
+				raise			
 		elif key=="5":
 			carga=Bulk()
 			pass

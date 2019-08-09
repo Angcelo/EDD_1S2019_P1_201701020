@@ -13,7 +13,6 @@ class ListaDoble:
 		self.primero=None
 		self.ultimo=None
 		self.indice=-1
-		self.nograficos=0;
 
 	def get_indice(self):
 		return self.indice
@@ -76,7 +75,7 @@ class ListaDoble:
 			return int(aux.y)
 
 	def eliminar(self,index):
-		if (index<0 or index>self.indice or self.indice<=3):
+		if (index<0 or index>self.indice or self.indice<=2):
 			return 
 		else:
 			aux=self.primero
@@ -101,26 +100,32 @@ class ListaDoble:
 		self.indice -= 1
 
 	def graficar(self):
-		f=open("nuevo"+str(self.nograficos)+".dot","w")
+		f=open("serpiente.dot","w")
 		f.write("digraph listadobleenlzada{\n")
-		f.write("rankdir=\"LR\"")
-		f.write("node [shape=\"square\"];\n")
+		f.write("rankdir=\"LR\";\n")
+		f.write("node [shape=\"record\"];\n")
+		aux=self.primero
+		while aux!=None:
+			f.write(str(aux.x)+str(aux.y)+" [ label = \"{|("+str(aux.x)+","+str(aux.y)+")|\\l}\"];\n")
+			aux=aux.siguiente
+			pass
 		aux=self.primero
 		while aux!=None:
 			if(aux.anterior is not None):
-				f.write("\"("+str(aux.x)+","+str(aux.y))+")\"  -> \"("+str(aux.anterior.x)+","+str(aux.anterior.y))+")\";\n")
+				f.write(str(aux.x)+str(aux.y) +"->"+ str(aux.anterior.x)+str(aux.anterior.y)+"\n")
+			elif(aux.anterior is None):
+				f.write(str(aux.x)+str(aux.y)+"  -> \"(Null_I)\";\n")
 				pass
 			if(aux.siguiente is not None):
-				f.write("\"("+str(aux.x)+","+str(aux.y))+")\"  -> \"("+str(aux.siguiente.x)+","+str(aux.siguiente.y))+")\";\n")
+				f.write(str(aux.x)+str(aux.y) + "->" +str(aux.siguiente.x)+str(aux.siguiente.y)+"\n")
+			elif(aux.siguiente is None):
+				f.write(str(aux.x)+str(aux.y)+"  -> \"(Null_D)\";\n")
 				pass
 			aux=aux.siguiente	
 			pass
 		f.write("}")
 		f.close()
-		os.system("dot -Tjpg nuevo"+str(self.nograficos)+".dot -o imagen"+str(self.nograficos)+".jpg")
-		os.system("imagen"+str(self.nograficos)+".jpg")
-		os.system("timeout 5")
-		self.nograficos+=1
+		os.system("dot -Tjpg serpiente.dot -o imagenserpiente.jpg")
 		pass
 
 	def mostrar(self):

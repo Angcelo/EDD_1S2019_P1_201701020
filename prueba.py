@@ -1,30 +1,24 @@
-import Puntaje
+import Usuarios
 
-lista=Puntaje.lista()
+lista=Usuarios.usuarios()
 
-lista.encolar(10,"A")
-lista.encolar(20,"B")
-lista.encolar(15,"C")
-lista.encolar(6,"D")
+lista.insertar("A")
+lista.insertar("B")
+lista.insertar("C")
+lista.insertar("D")
 
-lista.mostrar()
-
-print("--------------------")
-
-lista.encolar(12,"E")
-lista.encolar(5,"F")
-lista.encolar(5,"G")
-lista.encolar(9,"H")
+print(lista.get_tam())
 
 lista.mostrar()
 
-print("--------------------")
+lista.graficar()
 
-lista.encolar(2,"I")
-lista.encolar(1,"J")
-lista.encolar(0,"K")
-lista.encolar(3,"L")
+#print("--------------------")
 
-lista.mostrar()
+#lista.mostrar()
 
-print("--------------------")
+#print("--------------------")
+
+#lista.mostrar()
+
+#print("--------------------")
