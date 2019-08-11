@@ -168,7 +168,7 @@ class Jugar():
 				pass
 			try:
 				for x in range(0,snake.get_indice()+1):
-					window.addch(snake.obtener_pos(x,2),snake.obtener_pos(x,1),'#')
+					window.addch(snake.obtener_pos(x,2),snake.obtener_pos(x,1),'█')
 					pass
 			except Exception as e:
 				key=27
@@ -207,6 +207,7 @@ class Usuarios():
 				iteracion=iteracion-1
 				pass
 			pass
+		window=curses.endwin()
 
 class Score():
 	"""docstring for Score"""
@@ -230,6 +231,7 @@ class Score():
 			window.addstr(x+3,20,nombreusuario+": "+record)
 			pass
 		window.getch()
+		window=curses.endwin()
 
 class Bulk():
 	"""docstring for Bulk"""
@@ -270,6 +272,7 @@ class Bulk():
 		except Exception as e:
 			window.addstr(6,13,"error"+str(e))
 		window.getch()
+		window=curses.endwin()
 
 
 class Principal():
@@ -293,15 +296,20 @@ class Principal():
 		window.addstr(5,10,"3) User selection")
 		window.addstr(6,10,"4) Reports")
 		window.addstr(7,10,"5) Bulk Loarding")
+		window.addstr(7,10,"6) Exit")
 		key=window.getkey()
 		if key=="1":
 			dificultad=0
+			window=curses.endwin()
 			juego=Jugar()
 		elif key=="2":
+			window=curses.endwin()
 			socore=Score()
 		elif key=="3":
+			window=curses.endwin()
 			seleccion=Usuarios()
 		elif key=="4":
+			window=curses.endwin()
 			Records.graficar()
 			User.graficar()
 			try:		
@@ -312,7 +320,11 @@ class Principal():
 			except Exception as e:
 				raise			
 		elif key=="5":
+			window=curses.endwin()
 			carga=Bulk()
+		elif key=="6":
+			window=curses.endwin()
+			break
 			pass
 		pass
 

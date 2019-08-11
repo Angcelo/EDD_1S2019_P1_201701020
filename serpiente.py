@@ -1,9 +1,10 @@
 import os
 
 class NodoDoble:  
-    def __init__(self, datox,datoy):
+    def __init__(self, datox,datoy,indice):
         self.x = datox
         self.y= datoy
+        self.indice=indice+1
         self.siguiente = None
         self.anterior = None
 
@@ -21,7 +22,7 @@ class ListaDoble:
 		return self.primero==None
 
 	def insertar_final(self,valorx,valory):
-		nuevo=NodoDoble(valorx,valory)
+		nuevo=NodoDoble(valorx,valory,self.indice)
 		self.indice = self.indice+1
 		if self.estaVacia():
 			self.primero=nuevo
@@ -34,7 +35,7 @@ class ListaDoble:
 			return "insertado en posicion" + str(self.indice)
 			
 	def insertar_inicio(self,valorx,valory):
-		nuevo=NodoDoble(valorx,valory)
+		nuevo=NodoDoble(valorx,valory,self.indice)
 		self.indice = self.indice+1
 		if (self.estaVacia()):
 			self.primero=nuevo
@@ -106,20 +107,20 @@ class ListaDoble:
 		f.write("node [shape=\"record\"];\n")
 		aux=self.primero
 		while aux!=None:
-			f.write(str(aux.x)+str(aux.y)+" [ label = \"{|("+str(aux.x)+","+str(aux.y)+")|\\l}\"];\n")
+			f.write(str(aux.x)+str(aux.y)+str(aux.indice)+" [ label = \"{|("+str(aux.x)+","+str(aux.y)+")|\\l}\"];\n")
 			aux=aux.siguiente
 			pass
 		aux=self.primero
 		while aux!=None:
 			if(aux.anterior is not None):
-				f.write(str(aux.x)+str(aux.y) +"->"+ str(aux.anterior.x)+str(aux.anterior.y)+"\n")
+				f.write(str(aux.x)+str(aux.y)+str(aux.indice) +"->"+ str(aux.anterior.x)+str(aux.anterior.y)+str(aux.anterior.indice)+"\n")
 			elif(aux.anterior is None):
-				f.write(str(aux.x)+str(aux.y)+"  -> \"(Null_I)\";\n")
+				f.write(str(aux.x)+str(aux.y)+str(aux.indice)+"  -> \"(Null_I)\";\n")
 				pass
 			if(aux.siguiente is not None):
-				f.write(str(aux.x)+str(aux.y) + "->" +str(aux.siguiente.x)+str(aux.siguiente.y)+"\n")
+				f.write(str(aux.x)+str(aux.y)+str(aux.indice) + "->" +str(aux.siguiente.x)+str(aux.siguiente.y)+str(aux.siguiente.indice)+"\n")
 			elif(aux.siguiente is None):
-				f.write(str(aux.x)+str(aux.y)+"  -> \"(Null_D)\";\n")
+				f.write(str(aux.x)+str(aux.y)+str(aux.indice)+"  -> \"(Null_D)\";\n")
 				pass
 			aux=aux.siguiente	
 			pass

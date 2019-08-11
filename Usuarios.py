@@ -20,6 +20,17 @@ class usuarios:
 
 	def insertar(self,nombre):
 		nuevo=NodoDoble(nombre)
+		if self.estaVacia()==False:
+			aux=self.primero
+			contar=0
+			while(contar<=self.tamaño):
+				if aux.nombre==nombre:
+					return
+					pass
+				aux=aux.siguiente
+				contar+=1
+				pass
+			pass
 		self.tamaño = self.tamaño+1
 		if (self.estaVacia()):
 			self.primero=nuevo
@@ -63,7 +74,7 @@ class usuarios:
 		f=open("usuarios.dot","w")
 		f.write("digraph listacirulardoble{\n")
 		f.write("rankdir=\"LR\";\n")
-		f.write("ratio=0.3")
+		f.write("ratio=0.3;")
 		f.write("node [shape=\"record\"];\n")
 		aux=self.primero
 		contar=0
